@@ -309,3 +309,83 @@ const moviesArr = [
       "https://www.torrentbd.com/posters/n17TeZ9062keY64ukljBXgYY12004038.jpg",
   },
 ];
+
+// display movies
+function displayMovies() {
+  const moviesElement = document.querySelector(".movies");
+
+  for (let i = 0; i < moviesArr.length; i++) {
+    const movieElement = document.createElement("div");
+    movieElement.classList.add(
+      "movie",
+      "card",
+      "p-0",
+      "col",
+      "shadow",
+      "border-0",
+      "rounded-3"
+    );
+    movieElement.innerHTML = `
+            <div class="movie-poster">
+              <img
+                src="${moviesArr[i].posterURL}"
+                class="card-img-top w-100"
+              />
+            </div>
+            <div class="card-body">
+              <h5 class="card-title fw-bold">${moviesArr[i].title} (${moviesArr[i].year})</h5>
+              <h5 class="text-danger fw-bold">${moviesArr[i].ticketPrice} ৳</h5>
+              <button class="btn btn-dark fw-bold book-ticket">
+                Book Ticket
+              </button>
+            </div>
+    `;
+    moviesElement.append(movieElement);
+  }
+}
+displayMovies();
+
+// display modal
+function displayModal() {
+  const bookTicekets = document.querySelectorAll(".book-ticket");
+  // console.log(bookTicekets);
+  const modalWindow = document.querySelector(".modal-window");
+
+  for (let i = 0; i < bookTicekets.length; i++) {
+    bookTicekets[i].addEventListener("click", function () {
+      // console.log("clicked");
+      for (let j = 0; j < moviesArr.length; j++) {
+        if (i === j) {
+          const title = moviesArr[j].title;
+          const year = moviesArr[j].year;
+          const price = moviesArr[j].ticketPrice;
+          const vat = (price * 7) / 100;
+          const subtotal = price + vat;
+
+          // showing modal window
+          modalWindow.style.opacity = 1;
+          modalWindow.style.visibility = "visible";
+
+          modalWindow.innerHTML = `
+          <span class="close-btn">❌</span>
+          <h2 class="fw-bold mt-3">${title} (${year})</h2>
+          <h5><strong>Price:</strong> ${price} ৳</h5>
+          <h5><strong>VAT:</strong> ${vat} ৳</h5>
+          <h3><strong>Subtotal:</strong> ${subtotal} ৳</h3>
+          <button class="btn btn-danger fw-bold mt-4 buy-now">Buy Now</button>
+          `;
+
+          // hiding the modal
+          const closeBtn = document.querySelector(".close-btn");
+
+          closeBtn.addEventListener("click", function () {
+            modalWindow.style.opacity = 0;
+            modalWindow.style.visibility = "hidden";
+          });
+        }
+      }
+    });
+  }
+}
+
+displayModal();
